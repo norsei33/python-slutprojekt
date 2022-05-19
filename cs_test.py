@@ -15,6 +15,7 @@ app.hp=100
 bar = Rect(5,4,110,8,fill='red')
 text_hp = Label(app.hp,130,7,size=10, fill='red')
 fighter.hp= 40
+bomber.hp=100
 
 #grupper
 bullets = Group()
@@ -62,17 +63,21 @@ def onStep():
     if 400.8>bomber.bottom > 400 :
         bar.width-=bomber_crash
         text_hp.value -= bomber_crash
-    elif 401.3>fighter.bottom>400:
+    elif 401.3>fighter.bottom>400 :
         bar.width-=fighter_crash
         text_hp.value -= fighter_crash
     
     for bullet in bullets:
-            for fiende in fiender:
-                if bullet.hitsShape(fiende):
-                    bullets.remove(bullet)
+        if bullets.hitsShape(fighter) :
+            fighter.hp -= player_dmg
+        if bullets.hitsShape(bomber) :
+            bomber.hp -= player_dmg
+        for fiende in fiender:
+            if bullet.hitsShape(fiende) :
+                bullets.remove(bullet)
             if bullet.bottom==0:
                 bullets.remove(bullet)
-
+            
     for fiende in fiender:
         if fiende.top>400:
             fiender.remove(fiende)
@@ -80,12 +85,13 @@ def onStep():
     print(fighter.hp)   
 
         
-    if bullets.hitsShape(fighter):
-        fighter.hp -= player_dmg
+
     
     if fighter.hp<=0:
-        pass 
-          
+        fighter.visible= False
+    
+    if bomber.hp<=0:
+        bomber.visible= False
    
 
         
