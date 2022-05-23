@@ -20,6 +20,10 @@ bomber.hp=100
 #grupper
 bullets = Group()
 fiender = Group()
+bombs1= Group()
+bombs2= Group()
+bombs3= Group()
+
 
 
 
@@ -40,10 +44,23 @@ player.speed=3
 bomberSpeed=0.8
 fighterSpeed=1.3
 bullets_speed=8
-
+bombs1_speed = 3
+bombs2_speedy= 3
+bombs2_speedx = ((bombs2_speedy**2)/2)**(1/2)
+bombs3_speedy= 3
+bombs3_speedx = -((bombs2_speedy**2)/2)**(1/2)
 def pShooting():
     bullets.add(Image('pfire.png',player.centerX,player.centerY,height=8.6,width=5))
-   
+    
+
+def bShooting():
+    #bombs1.add(Image('pfire.png',player.bomberX,bomber.centerY,height=8.6,width=5))
+    #bombs2.add(Image('pfire.png',player.bomberX,bomber.centerY,height=8.6,width=5))
+    #bombs3.add(Image('pfire.png',player.bomberX,bomber.centerY,height=8.6,width=5))
+    bombs1.add(Circle(bomber.centerX, bomber.centerY,5))
+    bombs2.add(Circle(bomber.centerX, bomber.centerY,5))
+    bombs3.add(Circle(bomber.centerX, bomber.centerY,5))
+
 
 def onStep():
     app.steps+=1
@@ -54,12 +71,24 @@ def onStep():
         bild1.top=-400
     elif bild2.top == 400:
         bild2.top=-400
-    
+    if app.steps % 35 ==  0 and bomber.bottom<400 and bomber.visible== True:
+        bShooting()
+    for bomb in bombs1:
+        bomb.centerY += bombs1_speed
+        if bomb.bottom>400:
+            bombs1.remove(bomb)
+    for bomb in bombs2:
+        bomb.centerX += bombs2_speedx
+        bomb.centerY += bombs2_speedy
+    for bomb in bombs3:
+        bomb.centerX += bombs3_speedx
+        bomb.centerY += bombs3_speedy
+
     # saker som rör sig konstant
     bomber.centerY += bomberSpeed 
     fighter.centerY += fighterSpeed
     for bullet in bullets:
-        bullet.centerY -=5
+        bullet.centerY -=bullets_speed
     if 400.8>bomber.bottom > 400 :
         bar.width-=bomber_crash
         text_hp.value -= bomber_crash
