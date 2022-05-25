@@ -20,13 +20,14 @@ bomber.hp=100
 #grupper
 bullets = Group()
 fiender = Group()
+bombers= Group()
 bombs1= Group()
 bombs2= Group()
 bombs3= Group()
 
 
 
-
+bombers.add(bomber)
 fiender.add(fighter,bomber)
 
 
@@ -54,12 +55,12 @@ def pShooting():
     
 
 def bShooting():
-    #bombs1.add(Image('pfire.png',player.bomberX,bomber.centerY,height=8.6,width=5))
-    #bombs2.add(Image('pfire.png',player.bomberX,bomber.centerY,height=8.6,width=5))
-    #bombs3.add(Image('pfire.png',player.bomberX,bomber.centerY,height=8.6,width=5))
-    bombs1.add(Circle(bomber.centerX, bomber.centerY,5))
-    bombs2.add(Circle(bomber.centerX, bomber.centerY,5))
-    bombs3.add(Circle(bomber.centerX, bomber.centerY,5))
+    bombs1.add(Image('pfire.png',bomber.centerX,bomber.centerY,height=8.6,width=5))
+    bombs2.add(Image('pfire.png',bomber.centerX,bomber.centerY,height=8.6,width=5))
+    bombs3.add(Image('pfire.png',bomber.centerX,bomber.centerY,height=8.6,width=5))
+    #bombs1.add(Circle(bomber.centerX, bomber.centerY,5))
+    #bombs2.add(Circle(bomber.centerX, bomber.centerY,5))
+    #bombs3.add(Circle(bomber.centerX, bomber.centerY,5))
 
 
 def onStep():
@@ -74,25 +75,24 @@ def onStep():
     if app.steps % 35 ==  0 and bomber.bottom<400 and bomber.visible== True:
         bShooting()
     for bomb in bombs1:
-        bomb.centerY += bombs1_speed
-        if bomb.bottom>400:
-            bombs1.remove(bomb)
+            bomb.centerY += bombs1_speed
+    
     for bomb in bombs2:
         bomb.centerX += bombs2_speedx
         bomb.centerY += bombs2_speedy
     for bomb in bombs3:
         bomb.centerX += bombs3_speedx
         bomb.centerY += bombs3_speedy
-
-    # saker som rör sig konstant
-    bomber.centerY += bomberSpeed 
+   
+    if bomber.top<= 400:
+        bomber.centerY += bomberSpeed 
     fighter.centerY += fighterSpeed
     for bullet in bullets:
         bullet.centerY -=bullets_speed
-    if 400.8>bomber.bottom > 400 :
+    if 400.8>bomber.bottom > 400 and bomber.visible==True :
         bar.width-=bomber_crash
         text_hp.value -= bomber_crash
-    elif 401.3>fighter.bottom>400 :
+    elif 401.3>fighter.bottom>400 and fighter.visible==True :
         bar.width-=fighter_crash
         text_hp.value -= fighter_crash
     
@@ -106,12 +106,11 @@ def onStep():
                 bullets.remove(bullet)
             if bullet.bottom==0:
                 bullets.remove(bullet)
+    
             
-    for fiende in fiender:
-        if fiende.top>400:
-            fiender.remove(fiende)
+    
      
-    print(fighter.hp)   
+      
 
         
 
