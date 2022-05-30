@@ -38,7 +38,8 @@ app.steps=0
 ###skada
 bomber_crash=25
 fighter_crash=5
-player_dmg=10  
+player_dmg=10
+bombdmg=10  
 ###hastigheter
 scrolspeed=0.5
 player.speed=3
@@ -108,12 +109,28 @@ def onStep():
                 bullets.remove(bullet)
     
             
-    
+    for bomb in bombs1:
+        if bomb.hitsShape(player):
+            text_hp.value-= bombdmg
+            bar.width-= bombdmg
+            bombs1.remove(bomb)
+    for bomb in bombs2:
+        if bomb.hitsShape(player):
+            text_hp.value-= bombdmg
+            bar.width-= bombdmg
+            bombs2.remove(bomb)
+    for bomb in bombs3:
+        if bomb.hitsShape(player):
+            text_hp.value-= bombdmg
+            bar.width-= bombdmg
+            bombs3.remove(bomb)
+     
      
       
-
+    if text_hp.value<=0 and bar.width<=0:
+        app.pause()
         
-
+    print(text_hp.value)
     
     if fighter.hp<=0:
         fighter.visible= False
